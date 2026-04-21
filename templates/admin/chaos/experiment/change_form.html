@@ -1,0 +1,7 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+{% block footer %}
+  {{ block.super }}
+  <!-- Better: load just before body end -->
+  <script src="{% static 'js/experiment_admin.js' %}"></script>
+{% endblock %}

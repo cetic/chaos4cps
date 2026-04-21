@@ -1,0 +1,2332 @@
+{
+  "name": "CEAgent_HIL_V2",
+  "nodes": [
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{$json.currentPhase}}",
+                    "rightValue": "1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "849ea12d-495f-4af3-b866-e34f480af402"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e304f89d-8425-4b8a-89f3-0e2bb85560fa",
+                    "leftValue": "={{$json.currentPhase}}",
+                    "rightValue": "2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5d6b500f-c9ff-43b0-b5f5-9bf151f5ea1e",
+                    "leftValue": "={{$json.currentPhase}}",
+                    "rightValue": "3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e82ad0d2-cefa-4640-b170-7b147448b119",
+                    "leftValue": "={{$json.currentPhase}}",
+                    "rightValue": "4",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "fa747b36-bcd9-42ae-a620-09b9286abd3b",
+                    "leftValue": "={{$json.currentPhase}}",
+                    "rightValue": "5",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "none"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        16,
+        336
+      ],
+      "id": "15307ff0-ba4c-4dd1-843d-f2d9340048b3",
+      "name": "PhaseChoice"
+    },
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "=Hi! 👋\n\nI'm **CEAgent With Human In Loop**, your **Chaos Engineering Assistant for CPS Robustness Testing**.\n\nI'll help you design CPS robustness experiments through chaos engineering: identifying components, defining metrics, formulating hypotheses, and designing safe experiments.\n\n**To start, describe your CPS architecture:**\n- **UUID**: From Chaos4CPS (existing system)\n- **Description**: Direct system description (new analysis)\n\nWhat system would you like to test today?",
+        "options": {
+          "responseMode": "responseNodes"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -1632,
+        384
+      ],
+      "id": "431aacbd-9a3a-4433-887c-228120bc9cde",
+      "name": "When chat message received",
+      "webhookId": "619a6ec9-6d95-40a8-8c5b-aa58caad17e7"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = ($input.first().json.chatInput || \"\").trim();\n\nreturn [\n  {\n    json: {\n      choice: parseInt(input)\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1056,
+        400
+      ],
+      "id": "46902a3d-8e7d-4246-853d-12bb9b1af351",
+      "name": "ProcessChoice"
+    },
+    {
+      "parameters": {
+        "message": "=## What would you like to do? Please choose **1, 2, 3, 4, or 5**:\n\n1. **🔍 Component Identification**\n   Identify CPS components critical for robustness testing - sensors, actuators, controllers, networks, and their cyber-physical dependencies.\n\n2. **📊 Steady-State Robustness Metrics**\n   Define baseline metrics that establish normal behavior and detect robustness deviations during chaos experiments.\n\n3. **💡 Robustness Hypothesis Formation**\n   Formulate testable hypotheses predicting how your CPS should maintain robustness (acceptable performance) when subjected to perturbations.\n\n4. **🧪 Chaos Experiment Design**\n   Design safe, executable experiments that validate your robustness hypotheses through controlled perturbations with comprehensive safety measures.\n\n5. **Done**\n\n**Your choice:**\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1,
+      "position": [
+        -1248,
+        384
+      ],
+      "id": "8ebe4356-64dd-4b16-a74d-8bd3820be095",
+      "name": "Your Choice"
+    },
+    {
+      "parameters": {
+        "message": "=# 🧪 CPS Chaos Experiment Design Results\n\n{{ $('Store Experiment Analysis').item.json.experimentAnalysis }}\n\n---\n\n## Review This CPS Experiment Design\n\nPlease evaluate the experiment design above for safe CPS robustness testing:\n\n✅ **Are experiments specific, actionable, and testable?**\n- Each experiment clearly tests ONE robustness hypothesis\n- Hypothesis name exactly matches hypothesis from Phase 3\n- Component and metric names are exact (NOT IDs)\n\n✅ **Is the 10-part Description structure complete?**\n1. **Setup**: Environment, safety measures, instrumentation, preconditions\n2. **Execution Steps**: Lettered steps (a, b, c...) with specific actions, parameters, timing, ABORT conditions\n3. **Blast Radius**: Scope limitation, affected areas, protection measures\n4. **Monitoring**: Real-time metrics, alert thresholds, safety triggers, automated abort conditions\n5. **Rollback**: Step-by-step recovery with time bounds and safety verification\n6. **Timeframe**: Total duration breakdown (baseline, perturbation, recovery periods)\n7. **Success Criteria**: Quantitative robustness validation - what metrics must stay within which bounds, explicit FAILURE criteria\n8. **Analysis**: How to evaluate robustness - compare behaviors, measure degradation, assess recovery\n9. **Documentation**: Data collection, logging, reporting, lessons learned\n10. **CPS Safety Measures**: Physical safety protections, emergency procedures, personnel requirements\n\n✅ **Are CPS safety considerations comprehensive?**\n- **Physical Safety First**: NO experiments causing physical harm, equipment damage, or environmental hazards\n- **Blast Radius Control**: Experiment scope limited to isolated system section\n- **Real-time Monitoring**: Continuous observation with automated abort triggers\n- **Emergency Abort**: Instant termination capability (E-stop or automated)\n- **Rollback Guarantee**: Proven restore-to-safe-state capability with time bounds\n- **Safety Interlocks**: All physical safety systems remain active and unmodified\n- **Operator Presence**: Qualified personnel monitoring with abort authority\n- **Controlled Environment**: Test environment, controlled production, or extensive safeguards\n- **Gradual Escalation**: Start minimal, increase only after safety validation\n\n✅ **Are success criteria quantitative and linked to robustness metrics?**\n- Specific metric thresholds for success (e.g., \"jitter 5-10ms\", \"consistency >0.85\")\n- Clear FAILURE criteria (what violates robustness)\n- Robustness validation explicit (graceful degradation confirmed, fault tolerance validated)\n\n✅ **Are rollback plans clear, practical, and time-bound?**\n- Step-by-step recovery procedure\n- Maximum rollback time specified\n- Safety verification included\n- Emergency procedures defined\n\n✅ **Can these experiments be executed safely in CPS environments?**\n- No risk of physical harm or equipment damage\n- All safety systems protected\n- Emergency procedures comprehensive\n\n---\n\n### Respond with:\n\n* **OK** → Experiment design is complete, safe, and ready for CPS robustness validation\n* **NOK: [specific feedback]** → Experiment design needs improvements (please specify what to add or change regarding safety measures, execution steps, success criteria, or CPS-specific details)\n\n---\n\n**Your feedback:**\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1,
+      "position": [
+        1632,
+        1296
+      ],
+      "id": "4dbc564e-ae45-4238-b784-614ab4e3d1c5",
+      "name": "Experiment Feedback Request"
+    },
+    {
+      "parameters": {
+        "message": "={{ $('Initialize Workflow').item.json.uuid == 'none' ? \n    \"## 📄 **Synchronization with ChaosCPS**\\n\\nYour data has been successfully synchronized with **ChaosCPS**.\\n\\n---\" \n    : \"Process done.\" \n}}\n",
+        "waitUserReply": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1,
+      "position": [
+        2928,
+        864
+      ],
+      "id": "20446c28-2522-4cf1-bc39-80c6213aefa4",
+      "name": "Final Completion Message"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c2423628-ccbf-4881-9ede-82705cc36092",
+              "leftValue": "={{$('ProcessInput').item.json.type}}",
+              "rightValue": "uuid",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -880,
+        384
+      ],
+      "id": "8791056c-e04a-49c9-acc9-782e242505c2",
+      "name": "Is UUID?"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = ($input.first().json.chatInput || \"\").trim();\n\nfunction isUUID(str) {\n  // Regex for UUID-like strings (RFC 4122, supports v1–v8)\n  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;\n  return uuidRegex.test(str);\n}\n\nlet type = isUUID(input) ? \"uuid\" : \"description\";\n\nreturn [\n  {\n    json: {\n      value: input,\n      type: type\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1472,
+        384
+      ],
+      "id": "35077741-ddfa-44c1-acb4-21e438c81185",
+      "name": "ProcessInput"
+    },
+    {
+      "parameters": {
+        "url": "=https://carapace.cetic.be/version/{{$('ProcessInput').item.json.value}}/details-text/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -544,
+        272
+      ],
+      "id": "f451e852-f9a8-40a1-a6ec-c65ad2e8ba13",
+      "name": "GetDescription ChaosCPS",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "system-description",
+              "name": "systemDescription",
+              "value": "={{ $json.text_report }}",
+              "type": "string"
+            },
+            {
+              "id": "90eadfca-92e1-4c15-a660-47ffadf4c8be",
+              "name": "uuid",
+              "value": "={{ $json.version_uuid }}",
+              "type": "string"
+            },
+            {
+              "id": "678cc158-63e5-4229-97ae-1e55c30dfd19",
+              "name": "elements",
+              "value": "={{ $json.elements }}",
+              "type": "string"
+            },
+            {
+              "id": "44bd625c-5576-4ad8-a8d0-5bff60fe2948",
+              "name": "steady_states",
+              "value": "={{ $json.steady_states }}",
+              "type": "string"
+            },
+            {
+              "id": "53105d2a-0c3a-44ac-b6a1-4f5dd17ee9eb",
+              "name": "hypotheses",
+              "value": "={{ $json.hypotheses }}",
+              "type": "string"
+            },
+            {
+              "id": "a8ec44da-ffbd-41c0-b28a-0fca4e652aa3",
+              "name": "experiments",
+              "value": "={{ $json.experiments }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -384,
+        288
+      ],
+      "id": "0e6088ef-dba9-4654-b17f-a4b7d5637faf",
+      "name": "UUID Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0fd59fc6-6d4b-4d68-8f49-920768e02acc",
+              "name": "currentPhase",
+              "value": "={{ $('ProcessChoice').item.json.choice }}",
+              "type": "string"
+            },
+            {
+              "id": "87eb1093-28ed-407f-a545-e72e55721338",
+              "name": "systemDescription",
+              "value": "={{ $json.systemDescription }}",
+              "type": "string"
+            },
+            {
+              "id": "35f6273a-f530-472d-ada4-b7abb3714da1",
+              "name": "uuid",
+              "value": "={{ $json.uuid }}",
+              "type": "string"
+            },
+            {
+              "id": "4e5b5dab-3782-4197-9da9-3fbcae7b8054",
+              "name": "elements",
+              "value": "={{ $json.elements }}",
+              "type": "string"
+            },
+            {
+              "id": "38d7499c-0c28-4eb3-bde7-e1828f137313",
+              "name": "steady_states",
+              "value": "={{ $json.steady_states }}",
+              "type": "string"
+            },
+            {
+              "id": "899a08f4-1407-4aa0-9efa-84d9aab2c979",
+              "name": "hypotheses",
+              "value": "={{ $json.hypotheses }}",
+              "type": "string"
+            },
+            {
+              "id": "97d9a0fe-e187-4ed6-b663-ca149ca07a02",
+              "name": "experiments",
+              "value": "={{ $json.experiments }}",
+              "type": "string"
+            },
+            {
+              "id": "e5c7de92-3637-4549-862c-8d289963bda9",
+              "name": "summary_text",
+              "value": "={{ $json.summary_text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        416
+      ],
+      "id": "9e517835-44fb-4885-9707-5890faba83cf",
+      "name": "Initialize Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "system-description",
+              "name": "systemDescription",
+              "value": "={{ $('ProcessInput').item.json.value }}",
+              "type": "string"
+            },
+            {
+              "id": "90eadfca-92e1-4c15-a660-47ffadf4c8be",
+              "name": "uuid",
+              "value": "=none",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -352,
+        448
+      ],
+      "id": "2ae08a18-5f7a-4f78-b958-dfe28283fadb",
+      "name": "Description Workflow"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"experiments\": [\n    {\n      \"Experiment ID\": \"E1, E2, E3... (internal reference only)\",\n      \"Experiment Name\": \"Short descriptive name\",\n      \"Hypothesis Being Tested\": \"Exact hypothesis name (not ID)\",\n      \"Components\": [\"ComponentName1\", \"ComponentName2\"],\n      \"Metrics\": [\"MetricName1\", \"MetricName2\"],\n      \"Description\": \"What the experiment tests and how. Include execution steps, expected outcomes, safety measures, and abort conditions.\",\n      \"Justification\": \"Why critical for validating hypothesis\"\n    }\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1120,
+        1536
+      ],
+      "id": "797fe15d-dc1e-45c9-acfc-519f54e5fbc9",
+      "name": "Structured Output Parser3"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"hypotheses\": [\n    {\n      \"Hypothesis ID\": \"H1, H2, H3... (internal reference only)\",\n      \"Hypothesis Name\": \"Short descriptive name\",\n      \"Hypothesis Statement\": \"IF [specific failure condition], THEN [what system SHOULD DO to maintain robustness with quantitative bounds], BECAUSE [underlying robustness mechanism]. Use component/metric names, not IDs. THEN clause describes robustness behavior.\",\n      \"Justification\": \"What mechanisms tested\"\n    }\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1168,
+        1008
+      ],
+      "id": "ba282564-a6a6-4143-91bc-eac3b22b4fa5",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"steady_state_metrics\": [\n    {\n      \"Metric ID\": \"M1, M2, M3... (internal reference only)\",\n      \"Metric Name\": \"Descriptive identifier\",\n      \"Category\": \"Metric type (Performance/Reliability/Safety/Operational/Environmental/Hardware/Communication/Control Metrics - NOT component names)\",\n      \"Normal Behavior\": \"What is normal (with specific values/ranges)\",\n      \"Deviation Indicators\": \"Warning: [threshold + what it means]. Degraded: [threshold + what it means]. Failure: [threshold + what it means]\",\n      \"Justification\": \"Why this matters for robustness\"\n    }\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1216,
+        544
+      ],
+      "id": "1f62f6d1-3b0b-48cd-ba38-34b3249356a8",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"components\": [\n    {\n      \"Component ID\": \"C1, C2, C3... (internal reference only)\",\n      \"Component Name\": \"Descriptive name\",\n      \"Parent Component\": \"Parent name or 'None'\",\n      \"Description\": \"Function, real-time needs (if any)\",\n      \"Dependencies\": [\"ComponentName1\", \"ComponentName2\"],\n      \"Justification\": \"Failure impact, top 2-3 CPS risks\"\n    }\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1280,
+        64
+      ],
+      "id": "9fc44547-4d2f-4ecd-a656-e2c39e0db728",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=System Description: {{ $('Initialize Workflow').item.json.systemDescription }}\n\nExisting Components: {{ $('Initialize Workflow').item.json.elements }}\n\nExisting Metrics: {{ $('Initialize Workflow').item.json.steady_states }}\n\nExisting Hypotheses: {{ $('Initialize Workflow').item.json.hypotheses }}\n\nExisting Experiments (DO NOT DUPLICATE): {{ $('Initialize Workflow').item.json.experiments }}\n\nGenerated Experiments To revise: {{ $('Store Experiment Analysis').item.json.experimentAnalysis }}\n\nUser Feedback: {{ $('Experiment Feedback Request').item.json.chatInput }}\n\nPlease revise the experiment design based on the specific feedback provided above.",
+        "options": {
+          "systemMessage": "=# Role: CPS Experiment Revision Specialist\nExpert in refining chaos experiment designs based on user feedback while maintaining safety and robustness validation focus.\n\n# Task\nReview previous experiment design and user feedback, then provide improved version addressing specific concerns while enhancing safe, executable robustness testing.\n\n# Revision Guidelines\n1. Acknowledge feedback professionally\n2. Address specific concerns raised\n3. Maintain safety focus (CPS physical safety paramount and non-negotiable)\n4. Enhance execution clarity (make procedures detailed, actionable, unambiguous)\n5. Strengthen success criteria (quantitative robustness validation with clear FAILURE criteria)\n6. Summarize key improvements made\n\n# Consider (examples, not exhaustive)\n- Experiment types: hardware fault injection, network perturbation, software stress, environmental stress, control system perturbation, cascading failures\n- Safety: physical safety first, blast radius control, monitoring, emergency abort, rollback plan, operator presence, gradual escalation\n\n# Requirements\n- Flat list, NEW experiments only (skip existing)\n- Each experiment tests ONE hypothesis\n- Apply user feedback precisely\n- Preserve experiment strengths\n\n# Format Per Experiment\n**[ID]** (E1, E2...)\n- **Name**: Short descriptive name\n- **Hypothesis Tested**: Exact hypothesis name (not ID)\n- **Components**: Component names affected (not IDs)\n- **Metrics**: Metric names observed (not IDs)\n- **Description**: Describe what the experiment tests and how. Include execution steps, expected outcomes, safety measures, and abort conditions.\n- **Justification**: Why critical for validating hypothesis\n\n# Output Format\n1. Start with: \"Thank you for your feedback. Key improvements made: [2-3 sentence summary addressing feedback]\"\n2. Present revised experiments using format above\n3. Emphasize what was improved based on feedback\n\n# Example\n**E1**\n- **Name**: Industrial Network Failure - Local Control Test\n- **Hypothesis Tested**: Network Switch Failure - Local Control Resilience\n- **Components**: Industrial Ethernet Network, Production Line PLC Controller, Temperature Sensor Array, HMI Display\n- **Metrics**: Control Loop Cycle Time Jitter, PLC CPU Utilization, Sensor Reading Consistency Score, Data Buffer Fill Level\n- **Description**: This experiment tests whether the PLC can maintain local autonomous control when the network fails. Run during maintenance window at 50% capacity. First, establish a 30-minute baseline with jitter <5ms. Then disconnect the Industrial Ethernet at the main switch and monitor for 15 minutes. Expected behavior: jitter increases to 5-10ms (degraded but acceptable), local operation continues, operator alerts trigger within 60 seconds. Abort automatically if jitter exceeds 10ms for more than 30 seconds. After 15 minutes, restore the network and monitor recovery for another 15 minutes. Safety measures: E-stop remains independent (hardwired), qualified staff on-site, blast radius limited to single production line.\n- **Justification**: Validates PLC autonomous operation claim when network fails."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1344,
+        1456
+      ],
+      "id": "455409d2-7c59-4654-8478-8f63d717482a",
+      "name": "Experiment Revision Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.chatInput }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "OK",
+              "description": "No further actions, corrections, or adjustments are necessary"
+            },
+            {
+              "category": "NOK",
+              "description": "Adjustments, corrections, or further actions are needed"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        1888,
+        1296
+      ],
+      "id": "ba2f7de4-030d-491f-988f-9fbd5a898cf5",
+      "name": "Experiment Feedback Classifier"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "experiment-json",
+              "name": "experimentJson",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1424,
+        1296
+      ],
+      "id": "db7b51ec-6648-40af-9e08-b5fc1f9feb37",
+      "name": "Store Experiment JSON"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=System Description: {{ $('Initialize Workflow').item.json.systemDescription }}\n\nExisting Components: {{ $('Initialize Workflow').item.json.elements }}\n\nExisting Metrics: {{ $('Initialize Workflow').item.json.steady_states }}\n\nExisting Hypotheses: {{ $('Initialize Workflow').item.json.hypotheses }}\n\nExisting Experiments: {{ $('Initialize Workflow').item.json.experiments }}\n\nExperiment Analysis: {{ $('Store Experiment Analysis').item.json.experimentAnalysis }}\n\nConvert the experiment analysis into structured JSON format focusing only on the experiments section within hypotheses. **DO NOT CONVERT the Existing Experiments ONLY the Experiment Analysis**.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=# Role: JSON Formatter for CPS Chaos Experiments\nConvert unstructured experiment design into structured JSON.\n\n# Task\nExtract experiments from text and format as JSON. Preserve comprehensive safety measures and quantitative robustness validation criteria.\n\n# JSON Schema\n{\n  \"experiments\": [\n    {\n      \"Experiment ID\": \"E1, E2, E3...\",\n      \"Experiment Name\": \"Short descriptive name\",\n      \"Hypothesis Being Tested\": \"Exact hypothesis name (not ID)\",\n      \"Components\": [\"Component1\", \"Component2\"],\n      \"Metrics\": [\"Metric1\", \"Metric2\"],\n      \"Description\": \"What the experiment tests and how. Include execution steps, expected outcomes, safety measures, and abort conditions.\",\n      \"Justification\": \"Why critical for validating hypothesis\"\n    }\n  ]\n}\n\n# Extraction Rules\n1. Extract ALL experiments from text (skip acknowledgments/summaries)\n2. Use exact hypothesis, component, and metric names (NEVER use IDs)\n3. Preserve all safety-critical information (abort triggers, rollback procedures, safety measures)\n4. Preserve quantitative success criteria for robustness validation\n5. Handle missing data: \"\" for strings, [] for arrays\n6. Add \"\\n\" in Description field where needed for readability\n\n# Output Requirements\n- Return ONLY valid JSON (no markdown, no backticks, no explanatory text)\n- Ensure proper JSON escaping\n- Components and Metrics must be arrays of exact names\n\n# Example Input\n\"E1 - Industrial Network Failure - Local Control Test\nHypothesis Tested: Network Switch Failure - Local Control Resilience\nComponents: Industrial Ethernet Network, Production Line PLC Controller, Temperature Sensor Array, HMI Display\nMetrics: Control Loop Cycle Time Jitter, PLC CPU Utilization, Sensor Reading Consistency Score, Data Buffer Fill Level\nDescription: This experiment tests whether the PLC can maintain local autonomous control when the network fails. Run during maintenance window at 50% capacity. First, establish a 30-minute baseline with jitter <5ms. Then disconnect the Industrial Ethernet at the main switch and monitor for 15 minutes. Expected behavior: jitter increases to 5-10ms (degraded but acceptable), local operation continues, operator alerts trigger within 60 seconds. Abort automatically if jitter exceeds 10ms for more than 30 seconds. After 15 minutes, restore the network and monitor recovery for another 15 minutes. Safety measures: E-stop remains independent (hardwired), qualified staff on-site, blast radius limited to single production line.\nJustification: Validates PLC autonomous operation claim when network fails.\"\n\n# Example Output\n{\n  \"experiments\": [\n    {\n      \"Experiment ID\": \"E1\",\n      \"Experiment Name\": \"Industrial Network Failure - Local Control Test\",\n      \"Hypothesis Being Tested\": \"Network Switch Failure - Local Control Resilience\",\n      \"Components\": [\"Industrial Ethernet Network\", \"Production Line PLC Controller\", \"Temperature Sensor Array\", \"HMI Display\"],\n      \"Metrics\": [\"Control Loop Cycle Time Jitter\", \"PLC CPU Utilization\", \"Sensor Reading Consistency Score\", \"Data Buffer Fill Level\"],\n      \"Description\": \"This experiment tests whether the PLC can maintain local autonomous control when the network fails. Run during maintenance window at 50% capacity. First, establish a 30-minute baseline with jitter <5ms. Then disconnect the Industrial Ethernet at the main switch and monitor for 15 minutes. Expected behavior: jitter increases to 5-10ms (degraded but acceptable), local operation continues, operator alerts trigger within 60 seconds. Abort automatically if jitter exceeds 10ms for more than 30 seconds. After 15 minutes, restore the network and monitor recovery for another 15 minutes. Safety measures: E-stop remains independent (hardwired), qualified staff on-site, blast radius limited to single production line.\",\n      \"Justification\": \"Validates PLC autonomous operation claim when network fails.\"\n    }\n  ]\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1104,
+        1296
+      ],
+      "id": "c41e8dbb-8760-4a59-820c-65146ccde4a6",
+      "name": "Experiment JSON Formatter",
+      "retryOnFail": true,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "experiment-analysis",
+              "name": "experimentAnalysis",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        896,
+        1296
+      ],
+      "id": "6ea75efa-016c-41b6-b9af-4ba6958fca08",
+      "name": "Store Experiment Analysis"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=System Description: {{ $('Initialize Workflow').item.json.systemDescription }}\n\nExisting Components: {{ $('Initialize Workflow').item.json.elements }}\n\nExisting Metrics: {{ $('Initialize Workflow').item.json.steady_states }}\n\nExisting Hypotheses: {{ $('Initialize Workflow').item.json.hypotheses }}\n\nExisting Experiments (DO NOT DUPLICATE): {{ $('Initialize Workflow').item.json.experiments }}\n\n\nBased on the system description, existing components, metrics, hypotheses and experiments if any, design new specific chaos engineering experiments. **IMPORTANT: MAKE SURE THAT FOR EACH HYPOTHESIS, THERE IS AT LEAST ONE EXPERIMENT THAT COVERS IT. IF THERE IS NO EXPERIMENT FOR A HYPOTHESIS, PLEASE GENERATE ONE.**",
+        "options": {
+          "systemMessage": "=# Role: CPS Chaos Experiment Architect\nExpert in designing safe, executable chaos experiments validating CPS robustness hypotheses.\n\n# Task\nDesign practical, safe, repeatable experiments testing CPS robustness hypotheses. Focus on validating graceful degradation, fault tolerance, real-time resilience, safety preservation.\n\n# Consider (examples, not exhaustive)\n- Experiment types: hardware fault injection, network perturbation, software stress, environmental stress, control system perturbation, cascading failures\n- Safety: physical safety first, blast radius control, monitoring, emergency abort, rollback plan, operator presence\n\n# Requirements\n- Flat list, NEW experiments only (skip existing)\n- Each experiment tests ONE hypothesis\n- Quality over quantity - avoid redundancy\n- **Hypothesis Coverage**: Every hypothesis needs at least one experiment (skip if hypothesis already has experiments)\n\n# Format Per Experiment\n**[ID]** (E1, E2...)\n- **Name**: Short descriptive name\n- **Hypothesis Tested**: Exact hypothesis name (not ID)\n- **Components**: Component names affected (not IDs)\n- **Metrics**: Metric names observed (not IDs)\n- **Description**: Describe what the experiment tests and how. Include execution steps, expected outcomes, safety measures, and abort conditions.\n- **Justification**: Why critical for validating hypothesis\n\n# Example\n**E1**\n- **Name**: Industrial Network Failure - Local Control Test\n- **Hypothesis Tested**: Network Switch Failure - Local Control Resilience\n- **Components**: Industrial Ethernet Network, Production Line PLC Controller, Temperature Sensor Array, HMI Display\n- **Metrics**: Control Loop Cycle Time Jitter, PLC CPU Utilization, Sensor Reading Consistency Score, Data Buffer Fill Level\n- **Description**: This experiment tests whether the PLC can maintain local autonomous control when the network fails. Run during maintenance window at 50% capacity. First, establish a 30-minute baseline with jitter <5ms. Then disconnect the Industrial Ethernet at the main switch and monitor for 15 minutes. Expected behavior: jitter increases to 5-10ms (degraded but acceptable), local operation continues, operator alerts trigger within 60 seconds. Abort automatically if jitter exceeds 10ms for more than 30 seconds. After 15 minutes, restore the network and monitor recovery for another 15 minutes. Safety measures: E-stop remains independent (hardwired), qualified staff on-site, blast radius limited to single production line.\n- **Justification**: Validates PLC autonomous operation claim when network fails."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        528,
+        1296
+      ],
+      "id": "a9242cce-a741-4bb4-b172-070f9a468a1e",
+      "name": "Experiment Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=System Description: {{ $('Initialize Workflow').item.json.systemDescription }}\n\nExisting Components: {{ $('Initialize Workflow').item.json.elements }}\n\nExisting Metrics: {{ $('Initialize Workflow').item.json.steady_states }}\n\nExisting Hypotheses (DO NOT DUPLICATE): {{ $('Initialize Workflow').item.json.hypotheses }}\n\nGenerated Hypotheses To revise: {{ $('Store Hypothesis Analysis').item.json.hypothesisAnalysis }}\n\nUser Feedback: {{ $('Hypothesis Feedback Request').item.json.chatInput }}\n\nPlease revise the hypothesis formation based on the specific feedback provided above.",
+        "options": {
+          "systemMessage": "=# Role: CPS Hypothesis Revision Specialist\nExpert in refining CPS robustness hypotheses based on user feedback while maintaining testable predictions focus.\n\n# Task\nReview previous hypothesis analysis and user feedback, then provide improved version addressing specific concerns while enhancing robustness testing focus.\n\n# Revision Guidelines\n1. Acknowledge feedback professionally\n2. Address specific concerns raised\n3. Maintain robustness focus (how system maintains acceptable performance)\n4. Strengthen THEN clauses (describe robustness behavior, NOT just failure)\n5. Enhance CPS details (real-time constraints, safety, quantitative bounds)\n6. Summarize key improvements made\n\n# Consider (examples, not exhaustive)\n- Failures: hardware, network, software, environmental, control systems, data processing, cybersecurity, cascading\n- Robustness behaviors: graceful degradation, fault tolerance, real-time resilience, safety preservation, bounded deviation, recovery capability\n\n# Requirements\n- Flat list, NEW hypotheses only (skip existing)\n- Use IF-THEN-BECAUSE format with robustness behavior in THEN clauses\n- Link to specific components and metrics (use names, not IDs)\n- Apply user feedback precisely\n- Preserve strengths of original analysis\n\n# Format Per Hypothesis\n**[ID]** (H1, H2...)\n- **Name**: Short descriptive name\n- **Statement**: IF [specific failure condition], THEN [what system SHOULD DO to maintain robustness with quantitative bounds], BECAUSE [underlying robustness mechanism]\n- **Justification**: What mechanisms tested\n\n# Output Format\n1. Start with: \"Thank you for your feedback. Key improvements made: [2-3 sentence summary addressing feedback]\"\n2. Present revised hypotheses using format above\n3. Emphasize what was improved based on feedback\n\n# Example\n**H1**\n- **Name**: Network Switch Failure - Local Control Resilience\n- **Statement**: IF Industrial Ethernet Network experiences complete failure, THEN Production Line PLC Controller should maintain local autonomous operation for at least 15 minutes with Control Loop Cycle Time Jitter remaining below 10ms (degraded level) while triggering operator alerts and buffering data for later synchronization, BECAUSE PLC has local control logic, sensor input buffering, and emergency operation mode designed to provide temporary resilience during network outages.\n- **Justification**: Tests local control resilience mechanisms (buffering, autonomous operation, emergency mode)."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1376,
+        944
+      ],
+      "id": "f8efc984-c9c5-4bd3-ac31-5a57d3c35572",
+      "name": "Hypothesis Revision Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.chatInput }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "OK",
+              "description": "No further actions, corrections, or adjustments are necessary"
+            },
+            {
+              "category": "NOK",
+              "description": "Adjustments, corrections, or further actions are needed"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        1952,
+        928
+      ],
+      "id": "715928b6-f99c-491c-bdf0-39a2a45a94f9",
+      "name": "Hypothesis Feedback Classifier"
+    },
+    {
+      "parameters": {
+        "message": "=# 💡 CPS Robustness Hypothesis Formation Results\n\n{{ $('Store Hypothesis Analysis').item.json.hypothesisAnalysis }}\n\n---\n\n## Review This CPS Hypothesis Analysis\n\nPlease evaluate the hypothesis formation above for CPS robustness testing:\n\n✅ **Are all required hypothesis attributes present?**\n- Hypothesis ID, Name, Hypothesis Statement (IF-THEN-BECAUSE format), Justification\n\n✅ **Are Hypothesis Statements properly structured?**\n- **IF clause**: Specific failure condition with exact component names\n- **THEN clause**: **CRITICAL** - Describes HOW system maintains robustness (NOT just \"system fails\")\n  - Maintains steady-state metrics within acceptable deviation (preferred)\n  - Graceful degradation with explicit degraded performance levels\n  - Failover to backup with recovery time bounds\n  - Safety preservation with emergency procedures\n  - Bounded deviation with quantitative thresholds\n- **BECAUSE clause**: Underlying robustness mechanism explained\n- Uses exact component and metric names (NOT IDs)\n\n✅ **Are failure scenarios comprehensive and CPS-specific?**\n- Hardware failures (sensors, actuators, power, physical damage)\n- Network disruptions (latency, packet loss, protocol errors, partitions)\n- Software failures (resource exhaustion, timing violations, memory leaks)\n- Environmental factors (temperature, humidity, vibration, EMI)\n- Control system failures (PLC/DCS/SCADA malfunctions, timing violations)\n- Cascading failures (dependency chains, single point failures)\n\n✅ **Are robustness predictions testable and quantitative?**\n- Specific performance bounds in THEN clauses\n- Measurable success criteria\n- Clear distinction between warning, degraded, and failure states\n- Real-time constraints specified\n\n✅ **Is chaos engineering value clear?**\n- Why hypothesis is critical for validating robustness\n- What robustness mechanisms tested (graceful degradation, fault tolerance, real-time resilience, safety preservation)\n- What chaos experiment will reveal about actual vs claimed robustness\n\n✅ **Can these hypotheses be validated through safe chaos experiments?**\n\n---\n\n### Respond with:\n\n* **OK** → Hypothesis formation is complete and accurate for CPS robustness validation\n* **NOK: [specific feedback]** → Hypothesis analysis needs improvements (please specify which hypotheses, THEN clauses, or robustness predictions to add or change)\n\n---\n\n**Your feedback:**\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        800
+      ],
+      "id": "4473d847-7986-4e84-88f9-7a9c2d243364",
+      "name": "Hypothesis Feedback Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "hypothesis-json",
+              "name": "hypothesisJson",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1360,
+        784
+      ],
+      "id": "4f95713e-d4d4-4590-99c0-9dbf18973327",
+      "name": "Store Hypothesis JSON"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=System Description: {{ $('Initialize Workflow').item.json.systemDescription }}\n\nExisting Components: {{ $('Initialize Workflow').item.json.elements }}\n\nExisting Metrics: {{ $('Initialize Workflow').item.json.steady_states }}\n\nExisting Hypotheses: {{ $('Initialize Workflow').item.json.hypotheses }}\n\nHypothesis Analysis: {{ $('Store Hypothesis Analysis').item.json.hypothesisAnalysis }}\n\nConvert only the hypothesis analysis into structured JSON format focusing only on the hypotheses section. **DO NOT CONVERT the Existing Hypotheses ONLY the Hypothesis Analysis**.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=# Role: JSON Formatter for CPS Hypotheses\nConvert unstructured hypothesis analysis into structured JSON.\n\n# Task\nExtract hypotheses from text and format as JSON. Preserve IF-THEN-BECAUSE structure and robustness behavior predictions.\n\n# JSON Schema\n{\n  \"hypotheses\": [\n    {\n      \"Hypothesis ID\": \"H1, H2, H3...\",\n      \"Hypothesis Name\": \"Short descriptive name\",\n      \"Hypothesis Statement\": \"IF [specific failure condition], THEN [what system SHOULD DO to maintain robustness with quantitative bounds], BECAUSE [underlying robustness mechanism]. Use component/metric names, not IDs.\",\n      \"Justification\": \"What mechanisms tested\"\n    }\n  ]\n}\n\n# Extraction Rules\n1. Extract ALL hypotheses from text (skip acknowledgments/summaries)\n2. Preserve IF-THEN-BECAUSE structure exactly\n3. THEN clause must describe robustness behavior (graceful degradation, fault tolerance, safety preservation, bounded deviation, recovery capability) - NOT just \"system fails\"\n4. Use exact component and metric names (NEVER use IDs)\n5. Handle missing data: \"\" for strings\n6. Add \"\\n\" in fields where needed for readability\n\n# Output Requirements\n- Return ONLY valid JSON (no markdown, no backticks, no explanatory text)\n- Ensure proper JSON escaping\n\n# Example Input\n\"H1 - Network Switch Failure - Local Control Resilience\nStatement: IF Industrial Ethernet Network experiences complete failure, THEN Production Line PLC Controller should maintain local autonomous operation for at least 15 minutes with Control Loop Cycle Time Jitter remaining below 10ms (degraded level) while triggering operator alerts and buffering data for later synchronization, BECAUSE PLC has local control logic, sensor input buffering, and emergency operation mode designed to provide temporary resilience during network outages.\nJustification: Tests local control resilience mechanisms (buffering, autonomous operation, emergency mode).\"\n\n# Example Output\n{\n  \"hypotheses\": [\n    {\n      \"Hypothesis ID\": \"H1\",\n      \"Hypothesis Name\": \"Network Switch Failure - Local Control Resilience\",\n      \"Hypothesis Statement\": \"IF Industrial Ethernet Network experiences complete failure, THEN Production Line PLC Controller should maintain local autonomous operation for at least 15 minutes with Control Loop Cycle Time Jitter remaining below 10ms (degraded level) while triggering operator alerts and buffering data for later synchronization, BECAUSE PLC has local control logic, sensor input buffering, and emergency operation mode designed to provide temporary resilience during network outages.\",\n      \"Justification\": \"Tests local control resilience mechanisms (buffering, autonomous operation, emergency mode).\"\n    }\n  ]\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        976,
+        800
+      ],
+      "id": "dbe1a86f-cfef-4fc9-a8c8-53e642f9cea2",
+      "name": "Hypothesis JSON Formatter",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "hypothesis-analysis",
+              "name": "hypothesisAnalysis",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        800,
+        800
+      ],
+      "id": "24e6702b-0a8f-4a82-b033-85a32c342434",
+      "name": "Store Hypothesis Analysis"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=System Description: {{ $('Initialize Workflow').item.json.systemDescription }}\n\nExisting Components: {{ $('Initialize Workflow').item.json.elements }}\n\nExisting Metrics: {{ $('Initialize Workflow').item.json.steady_states }}\n\nExisting Hypotheses (DO NOT DUPLICATE): {{ $('Initialize Workflow').item.json.hypotheses }}\n\nBased on the system description, existing components, metrics and hypotheses if any, form new specific hypotheses about potential system failure modes, resilience issues, and the effects of component failures.",
+        "options": {
+          "systemMessage": "=# Role: CPS Chaos Engineering Hypothesis Specialist\nExpert in formulating testable hypotheses about CPS robustness behavior under perturbations.\n\n# Task\nFormulate specific, testable hypotheses predicting how CPS maintains robustness (acceptable performance) when subjected to failure conditions. Focus on graceful degradation, fault tolerance, real-time resilience, safety preservation.\n\n# Consider (examples, not exhaustive)\n- Failures: hardware, network, software, environmental, control systems, data processing, cybersecurity, cascading\n- Robustness behaviors: graceful degradation, fault tolerance, real-time resilience, safety preservation, bounded deviation, recovery capability\n\n# Requirements\n- Flat list, NEW hypotheses only (skip existing)\n- Use IF-THEN-BECAUSE format emphasizing robustness behavior\n- Link to specific components and steady-state metrics (use names, not IDs)\n- THEN clause must describe HOW system maintains robustness (not just \"system fails\")\n\n# Format Per Hypothesis\n**[ID]** (H1, H2...)\n- **Name**: Short descriptive name\n- **Statement**: IF [specific failure condition], THEN [what system SHOULD DO to maintain robustness with quantitative bounds], BECAUSE [underlying robustness mechanism]\n- **Justification**: What mechanisms tested\n\n# Example\n**H1**\n- **Name**: Network Switch Failure - Local Control Resilience\n- **Statement**: IF Industrial Ethernet Network experiences complete failure, THEN Production Line PLC Controller should maintain local autonomous operation for at least 15 minutes with Control Loop Cycle Time Jitter remaining below 10ms (degraded level) while triggering operator alerts and buffering data for later synchronization, BECAUSE PLC has local control logic, sensor input buffering, and emergency operation mode designed to provide temporary resilience during network outages.\n- **Justification**: Tests local control resilience mechanisms (buffering, autonomous operation, emergency mode)."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        288,
+        816
+      ],
+      "id": "8e410eeb-d551-4548-be40-25051388a059",
+      "name": "Hypothesis Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=System Description: {{ $('Initialize Workflow').item.json.systemDescription }}\n\nExisting Components: {{ $('Initialize Workflow').item.json.elements }}\n\nExisting Metrics (DO NOT DUPLICATE): {{ $('Initialize Workflow').item.json.steady_states }}\n\nGenerated Metrics to revise: {{ $('Store Steady State Analysis').item.json.steadyStateAnalysis }}\n\nUser Feedback: {{ $('Steady State Feedback Request').item.json.chatInput }}\n\nPlease revise the steady state definition based on the specific feedback provided above.",
+        "options": {
+          "systemMessage": "=# Role: CPS Steady State Revision Specialist\nExpert in refining CPS baseline metrics based on user feedback while maintaining robustness testing focus.\n\n# Task\nReview previous steady state analysis and user feedback, then provide improved version addressing specific concerns while enhancing robustness metric definitions.\n\n# Revision Guidelines\n1. Acknowledge feedback professionally\n2. Address specific concerns raised\n3. Maintain robustness focus (metrics detecting robustness deviations)\n4. Enhance CPS details where needed\n5. Strengthen three-level deviation indicators with quantitative thresholds\n6. Summarize key improvements made\n\n# Consider (examples, not exhaustive)\n- Metrics: performance, reliability, safety, operational, environmental, hardware, communication, control\n- Focus: deviation detection, quantitative thresholds, real-time measurability, cyber-physical coverage\n\n# Requirements\n- Flat list, NEW metrics only (skip existing)\n- Define normal behavior AND acceptable deviation ranges\n- Three-level thresholds with clear quantitative bounds\n- Apply user feedback precisely\n- Preserve strengths of original analysis\n\n# Format Per Metric\n**[ID]** (M1, M2...)\n- **Name**: Descriptive identifier\n- **Category**: Metric type (not component name)\n- **Normal Behavior**: What is normal (with specific values/ranges)\n- **Deviation Indicators**:\n  **Warning**: Threshold and what it means\n  **Degraded**: Threshold and what it means\n  **Failure**: Threshold and what it means\n- **Justification**: Why this matters for robustness\n\n# Output Format\n1. Start with: \"Thank you for your feedback. Key improvements made: [2-3 sentence summary addressing feedback]\"\n2. Present revised metrics using format above\n3. Emphasize what was improved based on feedback\n\n# Example\n**M1**\n- **Name**: Control Loop Cycle Time Jitter\n- **Category**: Control Metrics\n- **Normal Behavior**: Control loop runs at 50ms with less than 2ms variation (jitter under ±2ms)\n- **Deviation Indicators**:\n  **Warning**: Jitter between 2-5ms means CPU load is increasing\n  **Degraded**: Jitter between 5-10ms means control is stable but approaching limits\n  **Failure**: Jitter above 10ms means real-time requirements are violated\n- **Justification**: Control timing is critical for CPS. Jitter shows resource or network problems before complete failure."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1552,
+        512
+      ],
+      "id": "4f252f39-99d4-4c2b-9b9e-bff458efe0f0",
+      "name": "Steady State Revision Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.chatInput }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "OK",
+              "description": "No further actions, corrections, or adjustments are necessary"
+            },
+            {
+              "category": "NOK",
+              "description": "Adjustments, corrections, or further actions are needed"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        1968,
+        432
+      ],
+      "id": "799fc6b6-4c7c-4025-8f1e-f5091545e162",
+      "name": "Steady State Feedback Classifier"
+    },
+    {
+      "parameters": {
+        "message": "=# 📊 CPS Steady State Robustness Metrics Results\n\n{{ $('Store Steady State Analysis').item.json.steadyStateAnalysis }}\n\n---\n\n## Review This CPS Steady State Analysis\n\nPlease evaluate the steady state definition above for CPS robustness testing:\n\n✅ **Are all required metric attributes present for robustness validation?**\n- Metric ID, Name, Category, Normal Behavior, Deviation Indicators (THREE levels), Justification\n\n✅ **Are categories appropriate for CPS robustness metrics?**\n- Categories from: Performance, Reliability, Safety, Operational, Environmental, Hardware, Communication, Control Metrics\n- **NOT component names as categories**\n\n✅ **Are baseline metrics quantitative and measurable?**\n- Statistical baselines included (mean, std dev, percentiles, ranges)\n- Normal behavior with specific thresholds\n- Real-time constraints specified where applicable\n\n✅ **Are THREE-level Deviation Indicators properly defined?**\n- **Warning Level**: Early indicators of potential robustness issues (approaching limits)\n- **Degraded Level**: Graceful degradation range (reduced but acceptable performance)\n- **Failure Level**: Robustness violated (unacceptable operation, safety at risk)\n- Each level has quantitative thresholds\n\n✅ **Are CPS-specific robustness aspects covered?**\n- Control loop timing and stability metrics\n- Sensor consistency and hardware health metrics\n- Network reliability and communication metrics\n- Safety function response times\n- Cyber-physical coupling indicators\n- Cascading failure detection signals\n\n✅ **Is chaos engineering relevance clear?**\n- What hypothesis each metric tests\n- What experiment each metric enables\n- How metric validates robustness under perturbations\n\n✅ **Can these metrics reliably detect robustness degradation before catastrophic failure?**\n\n---\n\n### Respond with:\n\n* **OK** → Steady state robustness metrics are complete and accurate for CPS chaos engineering\n* **NOK: [specific feedback]** → Steady state analysis needs improvements (please specify which metrics, thresholds, or CPS details to add or change)\n\n---\n\n**Your feedback:**\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1,
+      "position": [
+        1744,
+        352
+      ],
+      "id": "b4f5193a-46a1-4865-be6f-cb6487bd3af9",
+      "name": "Steady State Feedback Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "steady-state-json",
+              "name": "steadyStateJson",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1456,
+        352
+      ],
+      "id": "f228ec04-85c0-4e3e-adf9-b0f23da7fa38",
+      "name": "Store Steady State JSON"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=System Description: {{ $('Initialize Workflow').item.json.systemDescription }}\n\nExisting Components: {{ $('Initialize Workflow').item.json.elements }}\n\nExisting Metrics: {{ $('Initialize Workflow').item.json.steady_states }}\n\nSteady State Analysis: {{ $json.steadyStateAnalysis }}\n\nConvert only the steady state analysis into structured JSON format focusing only on the steady state analysis section. **DO NOT CONVERT the Existing Metrics ONLY the Steady State Analysis**.\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=# Role: JSON Formatter for CPS Steady State Metrics\nConvert unstructured steady state metric analysis into structured JSON.\n\n# Task\nExtract steady state metrics from text and format as JSON. Preserve all quantitative thresholds and three-level deviation indicators.\n\n# JSON Schema\n{\n  \"steady_state_metrics\": [\n    {\n      \"Metric ID\": \"M1, M2, M3...\",\n      \"Metric Name\": \"Descriptive identifier\",\n      \"Category\": \"Metric type (Performance/Reliability/Safety/Operational/Environmental/Hardware/Communication/Control Metrics)\",\n      \"Normal Behavior\": \"What is normal (with specific values/ranges)\",\n      \"Deviation Indicators\": \"Warning: [threshold + what it means]. Degraded: [threshold + what it means]. Failure: [threshold + what it means]\",\n      \"Justification\": \"Why this matters for robustness\"\n    }\n  ]\n}\n\n# Extraction Rules\n1. Extract ALL metrics from text (skip acknowledgments/summaries)\n2. Preserve all quantitative thresholds (numbers, ranges, percentiles)\n3. THREE-level deviation indicators labeled: \"Warning:\", \"Degraded:\", \"Failure:\"\n4. Category MUST be from schema list (NEVER use component names)\n5. Handle missing data: \"\" for strings, [] for arrays\n6. Add \"\\n\" in fields where needed for readability\n\n# Output Requirements\n- Return ONLY valid JSON (no markdown, no backticks, no explanatory text)\n- Ensure proper JSON escaping\n\n# Example Input\n\"M1 - Control Loop Cycle Time Jitter\nCategory: Control Metrics\nNormal Behavior: Control loop runs at 50ms with less than 2ms variation (jitter under ±2ms)\nDeviation Indicators:\nWarning: Jitter between 2-5ms means CPU load is increasing\nDegraded: Jitter between 5-10ms means control is stable but approaching limits\nFailure: Jitter above 10ms means real-time requirements are violated\nJustification: Control timing is critical for CPS. Jitter shows resource or network problems before complete failure.\"\n\n# Example Output\n{\n  \"steady_state_metrics\": [\n    {\n      \"Metric ID\": \"M1\",\n      \"Metric Name\": \"Control Loop Cycle Time Jitter\",\n      \"Category\": \"Control Metrics\",\n      \"Normal Behavior\": \"Control loop runs at 50ms with less than 2ms variation (jitter under ±2ms)\",\n      \"Deviation Indicators\": \"Warning: Jitter between 2-5ms means CPU load is increasing. Degraded: Jitter between 5-10ms means control is stable but approaching limits. Failure: Jitter above 10ms means real-time requirements are violated.\",\n      \"Justification\": \"Control timing is critical for CPS. Jitter shows resource or network problems before complete failure.\"\n    }\n  ]\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        352
+      ],
+      "id": "0ffbbfb6-270f-45af-9e71-aac93e3123a0",
+      "name": "Steady State JSON Formatter",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "steady-state-analysis",
+              "name": "steadyStateAnalysis",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        832,
+        368
+      ],
+      "id": "ac74c1e4-80ee-4743-b371-c9dc78688552",
+      "name": "Store Steady State Analysis"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=System Description: {{ $('Initialize Workflow').item.json.systemDescription }}\n\nExisting Components: {{ $('Initialize Workflow').item.json.elements }}\n\nExisting Metrics (DO NOT DUPLICATE): {{ $('Initialize Workflow').item.json.steady_states }}\n\nBased on the system description, identified components and existing metrics if any, define the new steady state metrics and baseline behavior for each critical component.",
+        "options": {
+          "systemMessage": "=# Role: CPS Steady State & Robustness Metrics Specialist\nExpert in defining baseline metrics for CPS robustness validation through chaos engineering.\n\n# Task\nDefine measurable steady-state metrics establishing CPS robustness baselines. Focus on detecting robustness deviations, capturing cyber-physical interactions, respecting real-time constraints.\n\n# Consider (examples, not exhaustive)\n- Metrics: performance, reliability, safety, operational, environmental, hardware, communication, control\n- Focus: deviation detection, quantitative thresholds, real-time measurability, cyber-physical coverage, cascading indicators\n\n# Requirements\n- Flat list, NEW metrics only (skip existing)\n- Define normal behavior AND acceptable deviation ranges\n- Three-level thresholds: Warning / Degraded / Failure\n\n# Format Per Metric\n**[ID]** (M1, M2...)\n- **Name**: Descriptive identifier\n- **Category**: Metric type (not component name)\n- **Normal Behavior**: What is normal (with specific values/ranges)\n- **Deviation Indicators**:\n  **Warning**: When to be concerned (threshold + what it means)\n  **Degraded**: System working but reduced (threshold + what it means)\n  **Failure**: Unacceptable state (threshold + what it means)\n- **Justification**: Why this matters for robustness\n\n# Example\n**M1**\n- **Name**: Control Loop Cycle Time Jitter\n- **Category**: Control Metrics\n- **Normal Behavior**: Control loop runs at 50ms with less than 2ms variation (jitter under ±2ms)\n- **Deviation Indicators**:\n  **Warning**: Jitter between 2-5ms means CPU load is increasing\n  **Degraded**: Jitter between 5-10ms means control is stable but approaching limits\n  **Failure**: Jitter above 10ms means real-time requirements are violated\n- **Justification**: Control timing is critical for CPS. Jitter shows resource or network problems before complete failure."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        512,
+        352
+      ],
+      "id": "42a2878b-ca3e-4a7d-a892-688e5f37018e",
+      "name": "Steady State Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=System Description: {{ $('Initialize Workflow').item.json.systemDescription }}\n\nExisting Components (DO NOT DUPLICATE): {{ $('Initialize Workflow').item.json.elements }}\n\nGenerated Components to revise: {{ $('Store Component Analysis').item.json.componentAnalysis }}\n\nUser Feedback: {{ $('Component Feedback Request').item.json.chatInput }}\n\nPlease revise the component identification based on the specific feedback provided above. Focus on addressing the user's concerns while maintaining comprehensive component coverage.",
+        "options": {
+          "systemMessage": "=# Role: CPS Component Revision Specialist\nExpert in refining CPS component identification based on user feedback while maintaining robustness testing focus.\n\n# Task\nReview previous component analysis and user feedback, then provide improved version addressing specific concerns while enhancing robustness assessment.\n\n# Revision Guidelines\n1. Acknowledge feedback professionally\n2. Address specific concerns raised\n3. Maintain robustness focus (components critical for chaos engineering)\n4. Enhance CPS details where needed\n5. Strengthen failure analysis\n6. Summarize key improvements made\n\n# Consider (examples, not exhaustive)\n- Components: sensors, actuators, controllers, networks, software, databases, safety systems\n- Robustness factors: real-time constraints, safety implications, redundancy, cascading failures, environmental sensitivity\n\n# Requirements\n- Flat list, NEW components only (skip existing)\n- Apply user feedback precisely\n- Preserve strengths of original analysis\n\n# Format Per Component\n**[ID]** (C1, C2...)\n- **Name**: Descriptive name\n- **Parent**: Parent name or \"None\"\n- **Description**: function, real-time needs (if any)\n- **Dependencies**: Component names list\n- **Justification**: Failure impact, top 2-3 CPS risks\n\n# Output Format\n1. Start with: \"Thank you for your feedback. Key improvements made: [2-3 sentence summary addressing feedback]\"\n2. Present revised components using format above\n3. Emphasize what was improved based on feedback\n\n# Example\n**C1**\n- **Name**: Production Line PLC\n- **Parent**: None\n- **Description**: manages assembly automation, 100ms safety response\n- **Dependencies**: Industrial Ethernet, E-Stop Circuit, Sensor Modules, Power Supply\n- **Justification**: Single point failure causes production halt. Risks: timing violations, network latency, EMI disruption."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1472,
+        64
+      ],
+      "id": "3c73ed19-754a-47fb-beec-fce654626a4f",
+      "name": "Component Revision Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.chatInput }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "OK",
+              "description": "No further actions, corrections, or adjustments are necessary"
+            },
+            {
+              "category": "NOK",
+              "description": "Adjustments, corrections, or further actions are needed"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        1952,
+        0
+      ],
+      "id": "73271e63-0cd1-4ae1-998f-e8f253f7c3d6",
+      "name": "Component Feedback Classifier"
+    },
+    {
+      "parameters": {
+        "message": "=# 🔍 CPS Component Identification Results\n\n{{ $('Store Component Analysis').item.json.componentAnalysis }}\n\n---\n\n## Review This CPS Component Analysis\n\nPlease evaluate the component identification above for CPS robustness testing. Verify each component's attributes:\n\n✅ **Are all CPS components included with proper classification?**\n- Physical components (sensors, actuators, mechanical systems, power supplies)\n- Cyber components (software, algorithms, protocols, databases)\n- Cyber-physical interfaces (signal conditioning, ADC/DAC, device drivers)\n- Control systems (PLCs, DCS, SCADA, RTUs, HMIs)\n- Communication infrastructure (industrial networks, wireless protocols, gateways)\n\n✅ **Are cyber-physical relationships correctly mapped?**\n- Parent-child relationships accurate\n- Dependencies include both cyber and physical components\n- Cyber-physical coupling points identified\n\n✅ **Are CPS-specific details comprehensive?**\n- Real-time constraints specified (timing requirements, control cycles, deadlines)\n- Safety-critical designation clearly indicated\n- Industrial protocols identified (EtherCAT, Modbus, Profibus, CAN, LoRa, etc.)\n\n✅ **Is the robustness assessment thorough?**\n- Robustness criticality clearly stated\n- Failure impact described (graceful degradation vs catastrophic failure)\n- Cascading failure potential identified\n- CPS-specific risks documented (timing violations, sensor spoofing, EMI, physical damage, etc.)\n- Single point of failure assessment included\n- Existing robustness mechanisms noted (redundancy, fault tolerance, watchdog timers, buffering)\n\n---\n\n### Respond with:\n\n* **OK** → Component identification is complete and accurate for CPS robustness testing\n* **NOK: [specific feedback]** → Component analysis needs improvements (please specify which CPS attributes or robustness details to add or correct)\n\n---\n\n**Your feedback:**\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1,
+      "position": [
+        1728,
+        -96
+      ],
+      "id": "8bbb5a35-7206-405e-bab9-7d53770f2c23",
+      "name": "Component Feedback Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "component-json",
+              "name": "componentJson",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1424,
+        -112
+      ],
+      "id": "c70ceca1-a2c8-49d1-8500-a5580ee13e04",
+      "name": "Store Component JSON"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=System Description: {{ $('Initialize Workflow').item.json.systemDescription }}\n\nExisting Components: {{ $('Initialize Workflow').item.json.elements }}\n\nComponent Analysis: {{ $json.componentAnalysis }}\n\nConvert the component analysis into structured JSON format focusing only on the components section. **DO NOT CONVERT the Existing Components ONLY the Component Analysis**.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=# Role: JSON Formatter for CPS Components\nConvert unstructured CPS component analysis into structured JSON.\n\n# Task\nExtract component data from text and format as JSON. Preserve all CPS details and robustness information.\n\n# JSON Schema\n{\n  \"components\": [\n    {\n      \"Component ID\": \"C1, C2, C3...\",\n      \"Component Name\": \"Descriptive name\",\n      \"Parent Component\": \"Parent name or 'None'\",\n      \"Description\": \"Function, real-time needs (if any)\",\n      \"Dependencies\": [\"Component1\", \"Component2\"],\n      \"Justification\": \"Failure impact, top 2-3 CPS risks\"\n    }\n  ]\n}\n\n# Extraction Rules\n1. Extract ALL components from text (skip acknowledgments/summaries)\n2. Use Component Names (NOT IDs) in \"Parent Component\" and \"Dependencies\"\n3. Preserve CPS details: cyber/physical type, real-time constraints, safety level\n4. Preserve robustness info: failure impact, cascading effects, existing mechanisms\n5. Handle missing data: \"None\" for parent, [] for dependencies, \"\" for strings\n6. Add \"\\n\" in fields where needed for readability\n\n# Output Requirements\n- Return ONLY valid JSON (no markdown, no backticks, no explanatory text)\n- Dependencies must be array of exact Component Names\n- Ensure proper JSON escaping\n\n# Example Input\n\"C1 - Production Line PLC\nParent: None\nDescription: manages assembly automation, 100ms safety response\nDependencies: Industrial Ethernet, E-Stop Circuit\nJustification: Single point failure causes halt. Risks: timing violations, network latency.\n\nC2 - Industrial Ethernet\nParent: None\nDescription: real-time communication backbone, <1ms cycle\nDependencies: Network Switches\nJustification: Failure isolates control systems. Risks: jitter, packet loss.\"\n\n# Example Output\n{\n  \"components\": [\n    {\n      \"Component ID\": \"C1\",\n      \"Component Name\": \"Production Line PLC\",\n      \"Parent Component\": \"None\",\n      \"Description\": \"manages assembly automation, 100ms safety response\",\n      \"Dependencies\": [\"Industrial Ethernet\", \"E-Stop Circuit\"],\n      \"Justification\": \"Single point failure causes halt. Risks: timing violations, network latency.\"\n    },\n    {\n      \"Component ID\": \"C2\",\n      \"Component Name\": \"Industrial Ethernet\",\n      \"Parent Component\": \"None\",\n      \"Description\": \"real-time communication backbone, <1ms cycle\",\n      \"Dependencies\": [\"Network Switches\"],\n      \"Justification\": \"Failure isolates control systems. Risks: jitter, packet loss.\"\n    }\n  ]\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1024,
+        -112
+      ],
+      "id": "cf36d5ef-5efb-4294-8ca3-76a7053a9d30",
+      "name": "Component JSON Formatter",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "component-analysis",
+              "name": "componentAnalysis",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        800,
+        -112
+      ],
+      "id": "dd8d1d3b-1b1c-47d2-87ec-46a1c5788887",
+      "name": "Store Component Analysis"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=System Description: {{ $('Initialize Workflow').item.json.systemDescription }}\n\nExisting Components (DO NOT DUPLICATE): {{ $('Initialize Workflow').item.json.elements }}\n\nIdentify and analyze new critical components in this system for chaos engineering purposes.",
+        "options": {
+          "systemMessage": "=# Role: CPS Robustness Component Analyst\nExpert in identifying chaos-testable CPS components. Focus: cyber-physical coupling, real-time constraints, safety-critical elements, failure cascades.\n\n# Task\nIdentify CPS components for robustness chaos testing based on the system description. Prioritize components whose failure would reveal robustness weaknesses.\n\n# Consider (examples, not exhaustive)\n- Components: sensors, actuators, controllers, networks, software, databases, safety systems\n- Robustness factors: real-time constraints, safety implications, redundancy, cascading failures, environmental sensitivity\n\n# Requirements\n- Flat list, NEW components only\n- Emphasize robustness criticality\n\n# Format Per Component\n**[ID]** (C1, C2...)\n- **Name**: Descriptive name\n- **Parent**: Parent name or \"None\"\n- **Description**: Type (cyber/physical/hybrid), core function\n- **Dependencies**: Component names list\n- **Justification**: Failure impact, top 2-3 CPS risks\n\n# Example\n**C1**\n- **Name**: Production Line PLC\n- **Parent**: None\n- **Description**: Cyber-physical hybrid PLC, manages assembly automation\n- **Dependencies**: Industrial Ethernet, E-Stop Circuit, Sensor Modules, Power Supply\n- **Justification**: Single point failure causes production halt. Risks: timing violations, network latency, EMI disruption."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        304,
+        -112
+      ],
+      "id": "3f578483-7b2e-4868-84ee-edfedebcbb46",
+      "name": "Component Identification Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When chat message received').item.json.sessionId }}_{{ $('Initialize Workflow').item.json.currentPhase }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        528,
+        176
+      ],
+      "id": "5f89a877-0daf-40c3-82b1-34e4f86ca648",
+      "name": "Chat Memory"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When chat message received').item.json.sessionId }}_{{ $('Initialize Workflow').item.json.currentPhase }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        496,
+        576
+      ],
+      "id": "f534c6c6-253c-473f-a1de-d5190196e46e",
+      "name": "Chat Memory1"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When chat message received').item.json.sessionId }}_{{ $('Initialize Workflow').item.json.currentPhase }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        576,
+        1104
+      ],
+      "id": "5a57c382-a96d-4dc8-9e51-7aabf11fbde9",
+      "name": "Chat Memory2"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When chat message received').item.json.sessionId }}_{{ $('Initialize Workflow').item.json.currentPhase }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        672,
+        1648
+      ],
+      "id": "caf4e8c2-35f4-4016-a5a1-4168a609a3be",
+      "name": "Chat Memory3"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-4o-mini",
+        "options": {
+          "maxTokens": -1,
+          "temperature": 0,
+          "topP": 1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        368,
+        176
+      ],
+      "id": "b5201918-8a10-4add-b6c0-d2c8579c7a03",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "jjGFCfSlkmQ9xdHw",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-4o-mini",
+        "options": {
+          "maxTokens": -1,
+          "temperature": 0,
+          "topP": 1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        352,
+        576
+      ],
+      "id": "e5979ee4-aa0d-49a5-b096-99eb3f23ba26",
+      "name": "OpenRouter Chat Model1",
+      "credentials": {
+        "openRouterApi": {
+          "id": "jjGFCfSlkmQ9xdHw",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-4o-mini",
+        "options": {
+          "maxTokens": -1,
+          "temperature": 0,
+          "topP": 1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        432,
+        1104
+      ],
+      "id": "ab997d2c-1f92-417d-b57c-9593e64b80e8",
+      "name": "OpenRouter Chat Model2",
+      "credentials": {
+        "openRouterApi": {
+          "id": "jjGFCfSlkmQ9xdHw",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-4o-mini",
+        "options": {
+          "maxTokens": -1,
+          "temperature": 0,
+          "topP": 1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        528,
+        1648
+      ],
+      "id": "85d39d23-a77a-4526-8d99-15f5a3eb454a",
+      "name": "OpenRouter Chat Model3",
+      "credentials": {
+        "openRouterApi": {
+          "id": "jjGFCfSlkmQ9xdHw",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d72f448b-e186-4bb0-a416-9212968ffba5",
+              "leftValue": "={{ $('Initialize Workflow').item.json.uuid }}",
+              "rightValue": "none",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2352,
+        480
+      ],
+      "id": "dc225e36-2bb7-4e16-bb4c-d8d060bc21c5",
+      "name": "No UUID?"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{$('Initialize Workflow').item.json.currentPhase}}",
+                    "rightValue": "1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "e4dab4ab-9901-4aa9-820a-49c2b2d4d548"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "acf4a1f4-e50e-4032-bd63-7e9b741441d6",
+                    "leftValue": "={{$('Initialize Workflow').item.json.currentPhase}}",
+                    "rightValue": "2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "87e4f5ed-e99e-457b-9ea1-fca693a99923",
+                    "leftValue": "={{$('Initialize Workflow').item.json.currentPhase}}",
+                    "rightValue": "3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b0dcc2fa-744c-48c8-a167-f53d51946ca6",
+                    "leftValue": "={{$('Initialize Workflow').item.json.currentPhase}}",
+                    "rightValue": "4",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ca295e5b-8136-46f9-9581-3faa612f4966",
+                    "leftValue": "={{$('Initialize Workflow').item.json.currentPhase}}",
+                    "rightValue": "5",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "none"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        2528,
+        624
+      ],
+      "id": "b92c3d32-6249-48b9-8770-83edbb3d63a4",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://carapace.cetic.be/version/{{$('Initialize Workflow').item.json.uuid}}/save-data/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"componentJson\": {{ $('Store Component JSON').item.json.componentJson }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2704,
+        416
+      ],
+      "id": "e1c12718-3a77-4115-8556-d44c2fce76d6",
+      "name": "Send Component Data",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://carapace.cetic.be/version/{{$('Initialize Workflow').item.json.uuid}}/save-data/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"steadyStateJson\": {{ $('Store Steady State JSON').item.json.steadyStateJson }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2704,
+        576
+      ],
+      "id": "a266d4c9-b76f-4be2-a65c-359ad221d0da",
+      "name": "Send Steady State Data",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://carapace.cetic.be/version/{{$('Initialize Workflow').item.json.uuid}}/save-data/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"hypothesisJson\": {{ $('Store Hypothesis JSON').item.json.hypothesisJson }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2704,
+        736
+      ],
+      "id": "7c401a94-6c36-4e68-ba49-803cdbd69951",
+      "name": "Send Hypothesis Data",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://carapace.cetic.be/version/{{$('Initialize Workflow').item.json.uuid}}/save-data/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"experimentJson\": {{ $('Store Experiment JSON').item.json.experimentJson }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2704,
+        912
+      ],
+      "id": "9c7be0a5-2fbf-4f38-99eb-11989677c7d1",
+      "name": "Send Experiment Data",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -704,
+        288
+      ],
+      "id": "1f962b23-840c-4aa2-b8d5-6dd9e615f0af",
+      "name": "Wait",
+      "webhookId": "827efd1c-cbb2-4e22-9553-13d8f20158af"
+    },
+    {
+      "parameters": {
+        "message": "=## Process Done !!!",
+        "waitUserReply": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1,
+      "position": [
+        144,
+        672
+      ],
+      "id": "0b9230e6-b82d-41ca-87b5-d742251b1bf8",
+      "name": "DoneMsg"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "ProcessInput",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ProcessChoice": {
+      "main": [
+        [
+          {
+            "node": "Is UUID?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Your Choice": {
+      "main": [
+        [
+          {
+            "node": "ProcessChoice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PhaseChoice": {
+      "main": [
+        [
+          {
+            "node": "Component Identification Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Steady State Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Hypothesis Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Experiment Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "DoneMsg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Experiment Feedback Request": {
+      "main": [
+        [
+          {
+            "node": "Experiment Feedback Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Completion Message": {
+      "main": [
+        [
+          {
+            "node": "Your Choice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is UUID?": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Description Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ProcessInput": {
+      "main": [
+        [
+          {
+            "node": "Your Choice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetDescription ChaosCPS": {
+      "main": [
+        [
+          {
+            "node": "UUID Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UUID Workflow": {
+      "main": [
+        [
+          {
+            "node": "Initialize Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Initialize Workflow": {
+      "main": [
+        [
+          {
+            "node": "PhaseChoice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Description Workflow": {
+      "main": [
+        [
+          {
+            "node": "Initialize Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Experiment Revision Agent": {
+      "main": [
+        [
+          {
+            "node": "Store Experiment Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Experiment Feedback Classifier": {
+      "main": [
+        [
+          {
+            "node": "No UUID?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Experiment Revision Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Experiment JSON": {
+      "main": [
+        [
+          {
+            "node": "Experiment Feedback Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser3": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Experiment JSON Formatter",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Experiment JSON Formatter": {
+      "main": [
+        [
+          {
+            "node": "Store Experiment JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Experiment Analysis": {
+      "main": [
+        [
+          {
+            "node": "Experiment JSON Formatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Experiment Agent": {
+      "main": [
+        [
+          {
+            "node": "Store Experiment Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hypothesis Revision Agent": {
+      "main": [
+        [
+          {
+            "node": "Store Hypothesis Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hypothesis Feedback Classifier": {
+      "main": [
+        [
+          {
+            "node": "No UUID?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Hypothesis Revision Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hypothesis Feedback Request": {
+      "main": [
+        [
+          {
+            "node": "Hypothesis Feedback Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Hypothesis JSON": {
+      "main": [
+        [
+          {
+            "node": "Hypothesis Feedback Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Hypothesis JSON Formatter",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hypothesis JSON Formatter": {
+      "main": [
+        [
+          {
+            "node": "Store Hypothesis JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Hypothesis Analysis": {
+      "main": [
+        [
+          {
+            "node": "Hypothesis JSON Formatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hypothesis Agent": {
+      "main": [
+        [
+          {
+            "node": "Store Hypothesis Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Steady State Revision Agent": {
+      "main": [
+        [
+          {
+            "node": "Store Steady State Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Steady State Feedback Classifier": {
+      "main": [
+        [
+          {
+            "node": "No UUID?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Steady State Revision Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Steady State Feedback Request": {
+      "main": [
+        [
+          {
+            "node": "Steady State Feedback Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Steady State JSON": {
+      "main": [
+        [
+          {
+            "node": "Steady State Feedback Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Steady State JSON Formatter",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Steady State JSON Formatter": {
+      "main": [
+        [
+          {
+            "node": "Store Steady State JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Steady State Analysis": {
+      "main": [
+        [
+          {
+            "node": "Steady State JSON Formatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Steady State Agent": {
+      "main": [
+        [
+          {
+            "node": "Store Steady State Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Component Revision Agent": {
+      "main": [
+        [
+          {
+            "node": "Store Component Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Component Feedback Classifier": {
+      "main": [
+        [
+          {
+            "node": "No UUID?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Component Revision Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Component Feedback Request": {
+      "main": [
+        [
+          {
+            "node": "Component Feedback Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Component JSON": {
+      "main": [
+        [
+          {
+            "node": "Component Feedback Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Component JSON Formatter",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Component JSON Formatter": {
+      "main": [
+        [
+          {
+            "node": "Store Component JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Component Analysis": {
+      "main": [
+        [
+          {
+            "node": "Component JSON Formatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Component Identification Agent": {
+      "main": [
+        [
+          {
+            "node": "Store Component Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Component Identification Agent",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Component JSON Formatter",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Component Revision Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Steady State Agent",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Steady State JSON Formatter",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Steady State Revision Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Memory3": {
+      "ai_memory": [
+        [
+          {
+            "node": "Experiment Agent",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Experiment JSON Formatter",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Experiment Revision Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "Hypothesis Revision Agent",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Hypothesis JSON Formatter",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Hypothesis Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Component Revision Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Component Identification Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Component Feedback Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Component JSON Formatter",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Steady State Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Steady State JSON Formatter",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Steady State Feedback Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Steady State Revision Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Hypothesis Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Hypothesis JSON Formatter",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Hypothesis Revision Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Hypothesis Feedback Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Experiment Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Experiment JSON Formatter",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Experiment Revision Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Experiment Feedback Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No UUID?": {
+      "main": [
+        [
+          {
+            "node": "Final Completion Message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Send Component Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Steady State Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Hypothesis Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Experiment Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Final Completion Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Component Data": {
+      "main": [
+        [
+          {
+            "node": "Final Completion Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Steady State Data": {
+      "main": [
+        [
+          {
+            "node": "Final Completion Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Hypothesis Data": {
+      "main": [
+        [
+          {
+            "node": "Final Completion Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Experiment Data": {
+      "main": [
+        [
+          {
+            "node": "Final Completion Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "GetDescription ChaosCPS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9a352558-86e6-4d5b-903d-b26dd2e94414",
+  "meta": {
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "ub4G5OhJEWMqs7WM",
+  "tags": []
+}

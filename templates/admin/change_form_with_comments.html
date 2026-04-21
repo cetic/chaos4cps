@@ -1,0 +1,213 @@
+{% extends "admin/change_form.html" %}
+{% load static i18n %}
+
+{% block extrahead %}
+{{ block.super }}
+<!--<script src="{% static 'js/htmx.min.js' %}"></script>-->
+<style>
+    .comment-container {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e5e7eb;
+    }
+    .comment-author {
+        font-weight: 400;
+        color: #4b5563;
+        font-style: italic;
+    }
+    .comment-time {
+        font-size: 0.875rem;
+        color: #6b7280;
+        font-style: italic;
+    }
+    #comment-errors {
+        margin-top: 0.5rem;
+    }
+    .comment-item {
+        border-bottom: 1px solid #f3f4f6;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+    }
+    .comment-text {
+        font-size: 0.95rem;
+    }
+</style>
+{% endblock %}
+
+{% block after_related_objects %}  {# Changed block for proper placement #}
+{% if save_comment_url %}
+<div class="comment-container">
+    <h2 class="font-semibold text-lg mb-4
+    cursor-pointer font-semibold hover:text-base-700 dark:hover:text-white text-font-important-light dark:text-font-important-dark">{% trans "Comments" %}</h2>
+    
+    <!-- Comment Form -->
+    <div id="comment-form" class="mb-6">
+        <!-- Hidden field for content type ID 
+            
+        <input type="hidden" id="content-type-id" value="{{ content_type.id }}"> -->
+            
+        <textarea name="text" rows="5" 
+            class="vLargeTextField border border-base-200 bg-white font-medium min-w-20 placeholder-base-400 rounded-default shadow-xs text-font-default-light text-sm focus:outline-2 focus:-outline-offset-2 focus:outline-primary-600 group-[.errors]:border-red-600 focus:group-[.errors]:outline-red-600 dark:bg-base-900 dark:border-base-700 dark:text-font-default-dark dark:group-[.errors]:border-red-500 dark:focus:group-[.errors]:outline-red-500 dark:scheme-dark group-[.primary]:border-transparent px-3 py-2 w-full max-w-4xl appearance-none expandable transition transition-height duration-75 ease-in-out "
+            placeholder="{% trans 'Add comment...' %}" required></textarea>
+        <div id="comment-errors" class="mb-2"></div>
+        <button type="button" id="save-comment-btn"
+            class="bg-primary-600 block border border-transparent cursor-pointer font-medium px-3 py-2 rounded-default text-white w-full lg:w-auto">
+            {% trans "Save Comment" %}
+        </button>
+    </div>
+    
+    <!-- Existing Comments -->
+    <div id="comments-list">
+        {% for comment in comments %}
+        <div class="comment-item">
+            <p class="text-gray-700 comment-text">{{ comment.text }}</p>
+            <div class="flex justify-between mt-1">
+                <span class="comment-author">{{ comment.author.get_full_name|default:comment.author.username }}</span>
+                <!--<span class="comment-time">{{ comment.created_at|date:"DATETIME_FORMAT" }}</span>-->
+                <span class="comment-time">{{ comment.created_at }}</span>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-gray-500">{% trans "No comments yet" %}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const saveCommentBtn = document.querySelector('#save-comment-btn');
+    const commentForm = document.querySelector('#comment-form');
+    //console.log('Comment form and button:', commentForm);  // Debugging line
+    
+    if (saveCommentBtn && commentForm) {
+        //alert('Comment form loaded successfully!');  // Debugging line
+        saveCommentBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const commentText = commentForm.querySelector('textarea').value;
+            //const objectId = '{{ original.uuid }}';
+            //const contentTypeId = '{{ content_type.id }}';
+            //const contentTypeId = document.getElementById('content-type-id').value;
+            const saveCommentUrl = '{{ save_comment_url }}';
+
+            if (!commentText.trim()) {
+                document.getElementById('comment-errors').innerHTML = 
+                    '<div class="text-red-500">Comment cannot be empty</div>';
+                return;
+            }
+
+            if (!saveCommentUrl) {
+                document.getElementById('comment-errors').innerHTML = 
+                    '<div class="text-red-500">Save URL not available. Please reload the page.</div>';
+                return;
+            }
+
+            // Prevent multiple submissions
+            if (this.submitting) {
+                return;
+            }
+            this.submitting = true;
+
+            // Use fetch instead of htmx.ajax for full control
+            fetch(saveCommentUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: new URLSearchParams({
+                    //object_id: objectId,
+                    //content_type_id: contentTypeId,
+                    text: commentText,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                })
+            })
+            .then(response => {
+                this.submitting = false; // Reset flag
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Comment saved successfully:', data);
+                if (data.success) {
+                    // Clear textarea on success
+                    commentForm.querySelector('textarea').value = '';
+                    // Format the date exactly as: June 21, 2025, 4:08 p.m.
+                    const formatDate = (dateString) => {
+                        const date = new Date(dateString);
+                        const months = [
+                            'January', 'February', 'March', 'April', 'May', 'June',
+                            'July', 'August', 'September', 'October', 'November', 'December'
+                        ];
+                        
+                        const day = date.getDate();
+                        const month = months[date.getMonth()];
+                        const year = date.getFullYear();
+                        let hour = date.getHours();
+                        const minute = date.getMinutes().toString().padStart(2, '0');
+                        const ampm = hour >= 12 ? 'p.m.' : 'a.m.';
+                        
+                        // Convert to 12-hour format
+                        if (hour > 12) {
+                            hour -= 12;
+                        } else if (hour === 0) {
+                            hour = 12;
+                        }
+                        
+                        return `${month} ${day}, ${year}, ${hour}:${minute} ${ampm}`;
+                    };
+                
+                    // Prepend new comment to list
+                    const commentsList = document.getElementById('comments-list');
+                    const newComment = document.createElement('div');
+                    newComment.className = 'comment-item';
+                    newComment.innerHTML = `
+                        <p class="text-gray-700">${data.comment.text}</p>
+                        <div class="flex justify-between mt-1">
+                            <span class="comment-author">${data.comment.author}</span>
+                            <span class="comment-time">${formatDate(data.comment.created_at)}</span>
+                        </div>
+                    `;
+                
+                    // Insert after the "No comments" message if exists
+                    const noComments = commentsList.querySelector('p.text-gray-500');
+                    if (noComments) {
+                        noComments.replaceWith(newComment);
+                    } else {
+                        commentsList.prepend(newComment);
+                    }
+                
+                    // Clear errors
+                    document.getElementById('comment-errors').innerHTML = '';
+                } else {
+                    // Show server error
+                    document.getElementById('comment-errors').innerHTML =
+                        `<div class="text-red-500">${data.error || 'Unexpected error'}</div>`;
+                }
+            })
+            .catch(error => {
+                this.submitting = false; // Reset flag on error
+                console.error('Error:', error);
+                // Try to parse error response
+                if (error.response) {
+                    error.response.json().then(data => {
+                        document.getElementById('comment-errors').innerHTML =
+                            `<div class="text-red-500">${data.error || 'Error saving comment'}</div>`;
+                    }).catch(() => {
+                        document.getElementById('comment-errors').innerHTML =
+                            '<div class="text-red-500">Server error occurred</div>';
+                    });
+                } else {
+                    document.getElementById('comment-errors').innerHTML =
+                        '<div class="text-red-500">Network error occurred</div>';
+                }
+            });
+
+        });
+    }
+});
+</script>
+{% endblock %}
