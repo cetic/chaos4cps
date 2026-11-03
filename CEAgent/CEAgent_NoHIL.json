@@ -1460,7 +1460,8 @@
         272
       ],
       "id": "2c85cb0f-e318-4160-945c-70dc0ead2d8d",
-      "name": "Component Feedback Request"
+      "name": "Component Feedback Request",
+      "webhookId": "d3cb6f22-b646-41de-86fb-83fef0f0926e"
     },
     {
       "parameters": {
@@ -1475,7 +1476,8 @@
         1328
       ],
       "id": "2a9d1405-add1-4e79-a261-1c2c1b573521",
-      "name": "Experiment Feedback Request"
+      "name": "Experiment Feedback Request",
+      "webhookId": "fcdf37d5-bd1c-44f2-abf3-b4812dba3401"
     },
     {
       "parameters": {
@@ -1490,7 +1492,8 @@
         800
       ],
       "id": "6d16b61b-8ad7-4221-ae66-8d0e6d3ead84",
-      "name": "Hypothesis Feedback Request"
+      "name": "Hypothesis Feedback Request",
+      "webhookId": "3ec039e8-cdc3-4887-b5e1-9dd7393d69c1"
     },
     {
       "parameters": {
@@ -1505,7 +1508,8 @@
         480
       ],
       "id": "e03271d8-1ee6-4fc4-b5ac-a851c8aaa245",
-      "name": "Steady State Feedback Request"
+      "name": "Steady State Feedback Request",
+      "webhookId": "01cea607-051f-477d-956e-92fbc298e8fc"
     },
     {
       "parameters": {
@@ -1520,7 +1524,8 @@
         304
       ],
       "id": "9712b75e-b992-4603-a4bd-c0dd87ac9d6a",
-      "name": "ProcessingMsg"
+      "name": "ProcessingMsg",
+      "webhookId": "9f7038b6-25df-4a0c-af76-4578783a81b5"
     },
     {
       "parameters": {
@@ -1535,29 +1540,8 @@
         800
       ],
       "id": "28caf298-2b81-4051-a44e-a140278c1fec",
-      "name": "DoneMsg"
-    },
-    {
-      "parameters": {},
-      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
-      "typeVersion": 1,
-      "position": [
-        2432,
-        1728
-      ],
-      "id": "2078c409-ecd4-47cc-be08-5ca57696c511",
-      "name": "Calculator"
-    },
-    {
-      "parameters": {},
-      "type": "@n8n/n8n-nodes-langchain.toolThink",
-      "typeVersion": 1.1,
-      "position": [
-        2480,
-        1824
-      ],
-      "id": "9a1dbcaf-3e31-4b81-ba18-75b09e3e0b02",
-      "name": "Think"
+      "name": "DoneMsg",
+      "webhookId": "cf11d538-9f16-4724-ab44-3bde613d7859"
     }
   ],
   "pinData": {},
@@ -2292,38 +2276,17 @@
           }
         ]
       ]
-    },
-    "Calculator": {
-      "ai_tool": [
-        [
-          {
-            "node": "Experiment Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Think": {
-      "ai_tool": [
-        [
-          {
-            "node": "Experiment Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
   "active": true,
   "settings": {
     "executionOrder": "v1",
+    "binaryMode": "separate",
     "timeSavedMode": "fixed",
     "callerPolicy": "workflowsFromSameOwner",
     "availableInMCP": false
   },
-  "versionId": "a71b121e-3a56-4c4b-87c6-3fe2b735fa0c",
+  "versionId": "b9db4d1a-312d-4ebe-84b1-a0cffc4d114f",
   "meta": {
     "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
   },
