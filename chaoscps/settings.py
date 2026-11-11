@@ -289,14 +289,12 @@ UNFOLD = {
             "title": "CEAgent Security (No human in the loop)",
             "target": "_blank",
             "link": "https://n8n.cetic.be/webhook/504d3701-6195-4153-8539-d64ede32d2e8/chat",
-            #"link": "http://localhost:5678/webhook/6b33b165-fec4-4e2f-8dff-f4f47e6f8dd3/chat",
         },
         {
             "icon": "chat",
             "title": "CEAgent Security (Human in the loop)",
             "target": "_blank",
             "link": "https://n8n.cetic.be/webhook/bff2fee2-965a-4f56-9dcd-9e0138809f31/chat",
-            #"link": "http://localhost:5678/webhook/6b33b165-fec4-4e2f-8dff-f4f47e6f8dd3/chat",
             
         },
         {
