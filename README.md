@@ -11,10 +11,9 @@ The chaos engineering process itself remains the same. You still define the syst
 ## Getting Started
 
 ### 1. Clone the Git Repository
-First, generate a personal access token (referred to as `TOKEN_GENERATED`) and replace it in the command below. Also, replace `username` with your actual username:
 
 ```bash
-git clone https://username:TOKEN_GENERATED@git.cetic.be/carapace/chaoscps.git
+git clone https://github.com/cetic/chaos4cps.git
 ```
 
 ### 2. Setup 
